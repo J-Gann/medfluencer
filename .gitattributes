@@ -32,3 +32,4 @@ embeddings/video_description_embeddings.npy filter=lfs diff=lfs merge=lfs -text
 embeddings/video_ids.npy filter=lfs diff=lfs merge=lfs -text
 embeddings/video_title_embeddings.npy filter=lfs diff=lfs merge=lfs -text
 embeddings/video_transcription_embeddings.npy filter=lfs diff=lfs merge=lfs -text
+evaluation/comment_embeddings_2d_clustering.npy filter=lfs diff=lfs merge=lfs -text
