@@ -34,3 +34,7 @@ embeddings/video_title_embeddings.npy filter=lfs diff=lfs merge=lfs -text
 embeddings/video_transcription_embeddings.npy filter=lfs diff=lfs merge=lfs -text
 evaluation/comment_embeddings_2d_clustering.npy filter=lfs diff=lfs merge=lfs -text
 evaluation/comment_clustering.json filter=lfs diff=lfs merge=lfs -text
+embeddings/video_transcription_chunks.json filter=lfs diff=lfs merge=lfs -text
+embeddings/video_transcription_chunks_embeddings_part_1.npy filter=lfs diff=lfs merge=lfs -text
+embeddings/video_transcription_chunks_embeddings_part_2.npy filter=lfs diff=lfs merge=lfs -text
+embeddings/video_transcription_chunks_embeddings_part_3.npy filter=lfs diff=lfs merge=lfs -text
