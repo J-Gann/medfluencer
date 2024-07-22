@@ -39,3 +39,4 @@ embeddings/video_transcription_chunks_embeddings_part_1.npy filter=lfs diff=lfs 
 embeddings/video_transcription_chunks_embeddings_part_2.npy filter=lfs diff=lfs merge=lfs -text
 embeddings/video_transcription_chunks_embeddings_part_3.npy filter=lfs diff=lfs merge=lfs -text
 evaluation/ filter=lfs diff=lfs merge=lfs -text
+evaluation/evaluation_metrics_rag.pkl filter=lfs diff=lfs merge=lfs -text
