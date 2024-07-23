@@ -40,3 +40,6 @@ embeddings/video_transcription_chunks_embeddings_part_2.npy filter=lfs diff=lfs 
 embeddings/video_transcription_chunks_embeddings_part_3.npy filter=lfs diff=lfs merge=lfs -text
 evaluation/ filter=lfs diff=lfs merge=lfs -text
 evaluation/evaluation_metrics_rag.pkl filter=lfs diff=lfs merge=lfs -text
+evaluation/answers_per_field_comments.json filter=lfs diff=lfs merge=lfs -text
+evaluation/evaluation_metrics_rag_comments.pkl filter=lfs diff=lfs merge=lfs -text
+evaluation/questions_per_field_comments.json filter=lfs diff=lfs merge=lfs -text
