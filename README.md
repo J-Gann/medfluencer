@@ -18,7 +18,7 @@ To evaluate wether YouTube could be used as a source of medical information for 
 6. [RAG Evaluation](#rag-evaluation)
 7. [Conclusion](#conclusion)
 
-### Project Structure
+## Project Structure
 
 ```
 .
@@ -102,6 +102,51 @@ For all other relevant data, the YoutTube API can be used. The API provides acce
 - It is advised to look at the cost of each request type, as some requests can be more expensive than others.
 
 ## Data Analysis
+
+To analyze the content of the YouTube data, we will first of all take a look at an example of an individual video:
+
+```json
+{
+  "channel_name": "@MayoClinic",
+  "description": "Dr. Burchill dives deeper into the ways his integrated practice meets the needs of patients in a more complete way, from focusing on mental health to understanding cultural background.\n\nFor more information on Dr. Burchill and the Mayo Clinic team’s care for ACHD patients ...",
+  "transcription": "If we are genuinely\ncommittedto responding to the\nneeds of our patients,we have to think broadlyabout what those\nneeds are.And I've been\nin this fieldlong enough to know\nthat our patients arenot coming to\nspeak to me justabout their palpitation\nor their chest pain.They're coming with\ncomplicated livesand needs that\nrelate to , yesphysical issues, butalso mental health needs.Also cultural and\nspiritual, and so on ...",
+  "title": "Supporting the complete human needs of patients with ACHD, Dr. Luke Burchill, Mayo Clinic"
+}
+```
+
+For readability reasons, only the first part of the description and transcription are shown. The content is as expected with the description and title giving an overviwe of the video and the transcription being a machine generated text of the spoken content of the video. It is important to note that the transcription is not perfect and contains errors. quite frequently.
+
+Here is an example of a comment:
+
+```json
+{
+  "text": "only few people can live with enthusiasm like that guy, regardless of their situation.",
+  "authorDisplayName": "@mubarakgidadoumar3247",
+  "video_id": "ZeV0fL8eKAQ",
+  "replies": []
+}
+```
+
+Again, nothing out of the ordinary. The comment contains the text, the author and the video ID.
+It should be noted, that the large comments dataset [./scraping/comments_scraping.json](./scraping/comments_scraping.json) contains comments mostly without replies, while the smaller dataset [./scraping/comments_scraping_extended.json](./scraping/comments_scraping_extended.json) contains comments with replies (when available). The reason lies in the scraping algorithm, which was not able to scrape replies to comments in large quantities due to YouTube rate limits.
+
+To further analyze the content of the data, we semantic clustering was used. The goal is to group similar videos or comments together in order to find frequnt topics. The implementation can be found in the [data analysis notebook](./medfluencer_data_analysis.ipynb).
+
+### Semantic Clustering Videos
+
+The semantic clustering for the video dataset was performed as follows:
+
+1. Embed Video Descriptions​
+2. Reduce Embedding Dimension to 2 (**UMAP**)​
+3. Cluster Points by cosine similarity (**DBSCAN**)​
+4. Retrieve Transcriptions of Videos for each Cluster​
+5. Remove all words not part of medical keyword dataset (**MESH**)​
+6. Sort words by frequency​
+7. Ask LLM to infer topic label from top 15 words for each cluster
+
+Here is the result:
+
+![Semantic Clustering of Videos Dataset](./evaluation/images/videos_clustering.png)
 
 ### Contact
 
