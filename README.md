@@ -20,8 +20,6 @@ To evaluate wether YouTube could be used as a source of medical information for 
 
 ### Project Structure
 
-# Medfluencer Project Structure
-
 ```
 .
 ├── 📁 embeddings/    # Contains all embeddings and relevant additional information
