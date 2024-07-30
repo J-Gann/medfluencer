@@ -184,12 +184,6 @@ These topics are in one way or another also contained within the video dataset. 
 4. Approval
 5. Rejection
 
-### Examples
-
-Now that we have a good overview of the content of the dataset, we can look at some examples of interesting clusters.
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 ## RAG System
 
 One basic requirement for a RAG system to operate is the embedding of the dataset. As the data contains german as well as english videos, the embedding was done using an english-german sentence transformer: [T-Systems-onsite/cross-en-de-roberta-sentence-transformer](https://huggingface.co/T-Systems-onsite/cross-en-de-roberta-sentence-transformer) loaded from huggingface. The implementation can be found in the [index notebook](./medfluencer_index.ipynb) and the resulting embeddings can be found at [./embeddings](./embeddings/). To efficiently use the embeddings in a RAG system, they were also uploaded to a vector store called Pinecone.
@@ -280,7 +274,7 @@ Comment Dataset: The RAG system using the comment dataset performed poorly in te
 
 Question Generation: An unexpected benefit emerged from the comment dataset. While not ideal for answering questions, it proved valuable for generating challenging, realistic medical questions. This approach led to a more challenging evaluation of the RAG system, as indicated by lower contextual and answer relevancy scores compared to LLM-generated questions.
 
-### Contact
+## Contact
 
 Jonas Gann\
 Student Data and Computer Science\
