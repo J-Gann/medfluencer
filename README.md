@@ -194,9 +194,9 @@ Now that we have a good overview of the content of the dataset, we can look at s
 
 One basic requirement for a RAG system to operate is the embedding of the dataset. As the data contains german as well as english videos, the embedding was done using an english-german sentence transformer: [T-Systems-onsite/cross-en-de-roberta-sentence-transformer](https://huggingface.co/T-Systems-onsite/cross-en-de-roberta-sentence-transformer) loaded from huggingface. The implementation can be found in the [index notebook](./medfluencer_index.ipynb) and the resulting embeddings can be found at [./embeddings](./embeddings/). To efficiently use the embeddings in a RAG system, they were also uploaded to a vector store called Pinecone.
 
-To put embedded and indexed dataset to use, two RAG systems were implemented. One for the videos dataset and one for the comments dataset. The implementation can be found in the [RAG notebook](./medfluencer_rag.ipynb).
+To put the embedded and indexed dataset to use, two RAG systems were implemented. One for the videos dataset and one for the comments dataset. The implementation can be found in the [RAG notebook](./medfluencer_rag.ipynb).
 
-The RAG systems were implemented using llamaindex and consists of the following modules:
+The RAG systems were implemented using llamaindex and consist of the following modules:
 
 1. Retriever: A retriever module that retrieves the most relevant documents from the dataset based on the user query. The retriever is configured to use the Pinecone vector store and retrieve the top 20 most similar documents.
 2. Reranking: An english-german cross encoder is used to further filter the top 5 most relevant documents.
@@ -214,6 +214,22 @@ To evaluate the answers of the RAG system, the DeepEval framework was used. The 
 4. Hallucination: This metric measures if the answer contains any information that is not present in the retrieved context.
 
 Here are the results of the evaluation for the videos dataset:
+
+![Average Metrics RAG Videos](./evaluation/images/average_metrics_rag_videos.png)
+
+This plot shows the average evaluation metrics for the RAG system using the video dataset. Answer Relevancy and Faithfulness are very high, while Context Relevancy and Hallucination remain at around 0.5.
+
+A clearer picture can be seen in the following plot which shows the evaluation metrics for each medical field:
+
+![Metrics RAG Videos](./evaluation/images/metrics_rag_videos.png)
+
+This plot shows the average metrics of the 5 questions for each medical field. While the answer relevancy and faithfulness are very high for all fields, the context relevancy varies very much depending on the field. The Hallucination metric inversly correlates to the context relevancy.
+
+Based on this observation I would conclude that the LLM (Claude Sonnet 3.5) is very powerful and in itself sufficiently capable of answering every question. Therefore the answer relevancy and faithfulness remain high mostly independent of the contextual relevancy. The fact that the hallucination metric inversly correlates to the contextual relevancy might indicate, that the LLM is capable of generating relevant information that is not present in the context, in cases where the retrieved context is not relevant to the question.
+
+Here are the results of the evaluation for the comments dataset:
+
+![Average Metrics RAG Comments](./evaluation/images/average_metrics_rag_comments.png)
 
 ### Contact
 
