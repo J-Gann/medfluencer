@@ -130,7 +130,7 @@ Here is an example of a comment:
 Again, nothing out of the ordinary. The comment contains the text, the author and the video ID.
 It should be noted, that the large comments dataset [./scraping/comments_scraping.json](./scraping/comments_scraping.json) contains comments mostly without replies, while the smaller dataset [./scraping/comments_scraping_extended.json](./scraping/comments_scraping_extended.json) contains comments with replies (when available). The reason lies in the scraping algorithm, which was not able to scrape replies to comments in large quantities due to YouTube rate limits.
 
-To further analyze the content of the data, we semantic clustering was used. The goal is to group similar videos or comments together in order to find frequnt topics. The implementation can be found in the [data analysis notebook](./medfluencer_data_analysis.ipynb).
+To further analyze the content of the data, semantic clustering was used. The goal was to group similar videos or comments together in order to find frequnt topics. The implementation can be found in the [data analysis notebook](./medfluencer_data_analysis.ipynb).
 
 ### Semantic Clustering Videos
 
@@ -147,6 +147,73 @@ The semantic clustering for the video dataset was performed as follows:
 Here is the result:
 
 ![Semantic Clustering of Videos Dataset](./evaluation/images/videos_clustering.png)
+
+On first glance it is impressive, that the clustering resulted in such distinct clusters. However, DBSCAN creates a special class which contains all points that are not part of a cluster. This class is often the largest and contains all outliers. In this visualization, the outlier class is not shown, hence the clusters appear to be very distinct.
+
+The plot shows, that there exists a broad range of medical topics in the dataset, the most frequent ones being:
+
+1. Psychotherapy
+2. Orthopaedics
+3. Nutrition
+4. Skin
+5. Infectious Diseases
+
+### Semantic Clustering Comments
+
+The semantic clustering for the comments dataset was performed similar to the video dataset. The only differences are, that the comment text was embedded and used for keyword-extraction and that the keywords were not filtered using the MESH dataset
+
+Here is the result:
+
+![Semantic Clustering of Comments Dataset](./evaluation/images/comments_clustering.png)
+
+Again, the plot shows a broad range of topics. The most frequent ones being:
+
+1. Nutrition / Drug Use
+2. Orthopedics
+3. COVID
+4. Clinic / Operation
+5. Deperession / Fear / Neurological Disorders
+6. Age / Dementia
+7. Parenting
+
+These topics are in one way or another also contained within the video dataset. The following topics are unique to the comments dataset:
+
+1. Opinion
+2. Conspiracy
+3. Emotion / Spirituality
+4. Approval
+5. Rejection
+
+### Examples
+
+Now that we have a good overview of the content of the dataset, we can look at some examples of interesting clusters.
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+## RAG System
+
+One basic requirement for a RAG system to operate is the embedding of the dataset. As the data contains german as well as english videos, the embedding was done using an english-german sentence transformer: [T-Systems-onsite/cross-en-de-roberta-sentence-transformer](https://huggingface.co/T-Systems-onsite/cross-en-de-roberta-sentence-transformer) loaded from huggingface. The implementation can be found in the [index notebook](./medfluencer_index.ipynb) and the resulting embeddings can be found at [./embeddings](./embeddings/). To efficiently use the embeddings in a RAG system, they were also uploaded to a vector store called Pinecone.
+
+To put embedded and indexed dataset to use, two RAG systems were implemented. One for the videos dataset and one for the comments dataset. The implementation can be found in the [RAG notebook](./medfluencer_rag.ipynb).
+
+The RAG systems were implemented using llamaindex and consists of the following modules:
+
+1. Retriever: A retriever module that retrieves the most relevant documents from the dataset based on the user query. The retriever is configured to use the Pinecone vector store and retrieve the top 20 most similar documents.
+2. Reranking: An english-german cross encoder is used to further filter the top 5 most relevant documents.
+3. Response Synthesizer: An LLM called Claude 3.5 Sonnet was used for the generation of the final response.
+
+## RAG Evaluation
+
+To evaluate the quality of the RAG system and the underlying dataset, an LLM was used to generate 5 medical questions for each of the [medical fields](./medical_fields.json) which would then be answered by the RAG system.
+
+To evaluate the answers of the RAG system, the DeepEval framework was used. The framework provides a set of evaluation metrics to evaluate the quality of the generated answers. The evaluation metrics are:
+
+1. Answer Relevancy: This metric measures the relevance of the answer to the question.
+2. Faithfulness: This metric measures if there are any contradictions between the answer and the retrieved context.
+3. Context Relevancy: This metric measures the relevance of the retrieved context to the question.
+4. Hallucination: This metric measures if the answer contains any information that is not present in the retrieved context.
+
+Here are the results of the evaluation for the videos dataset:
 
 ### Contact
 
