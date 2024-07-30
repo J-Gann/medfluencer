@@ -213,6 +213,8 @@ To evaluate the answers of the RAG system, the DeepEval framework was used. The 
 3. Context Relevancy: This metric measures the relevance of the retrieved context to the question.
 4. Hallucination: This metric measures if the answer contains any information that is not present in the retrieved context.
 
+### Evaluation Videos Dataset
+
 Here are the results of the evaluation for the videos dataset:
 
 ![Average Metrics RAG Videos](./evaluation/images/average_metrics_rag_videos.png)
@@ -227,9 +229,56 @@ This plot shows the average metrics of the 5 questions for each medical field. W
 
 Based on this observation I would conclude that the LLM (Claude Sonnet 3.5) is very powerful and in itself sufficiently capable of answering every question. Therefore the answer relevancy and faithfulness remain high mostly independent of the contextual relevancy. The fact that the hallucination metric inversly correlates to the contextual relevancy might indicate, that the LLM is capable of generating relevant information that is not present in the context, in cases where the retrieved context is not relevant to the question.
 
+### Evaluation Comments Dataset
+
 Here are the results of the evaluation for the comments dataset:
 
 ![Average Metrics RAG Comments](./evaluation/images/average_metrics_rag_comments.png)
+
+The plot shows a very different picture compared to the video dataset. The contextual relevancy is very low and the hallucination metric is very high. This indicates, that the retriever of the RAG system is unable to find relevant documents for the questions. Similar to the video dataset, the answer relevancy and faithfulness remain high, again indicating, that the LLM is able to generate relevant answers independent of the context. This also results in a very high hallucination metric.
+
+The following plot shows the evaluation metrics for each medical field:
+
+![Metrics RAG Comments](./evaluation/images/metrics_rag_comments.png)
+
+The contextual relevancy is very low for all fields, while the hallucination metric is very high. The answer relevancy and faithfulness remain high for most fields.
+
+The evaluation of the RAG system using comments as data source suggests, that comments are not suitable as a data source for a rag system. Manually exploring examples of questions, generated answers an retrieved context, it become clear, that the the retriever retrieved comments which posed a question similar to the user query, leading to a context irrelevant for answering the question.
+To mitigate this issue I created another comments dataset which also contained the replies to each comment in form of a question-answer pair. The dataset can be found at [./scraping/comments_scraping_extended.json](./scraping/comments_scraping_extended.json). The expectation was, that along with the comment posing a similar question to the user prompt, the replies would contain the answer to the question. The following plot shows the result of the evaluation of the RAG system using the extended comments dataset:
+
+![Average Metrics RAG Comments Extended](./evaluation/images/average_metrics_rag_comments_extended.png)
+
+The plot shows only a marginal improvement in contextual relevancy. As a result of that I concluded, that the comments dataset is not suitable as a data source for a RAG system due to a lack of useful information.
+
+### Comments for Question Generation
+
+The observation, that the RAG system retrieved many questions from the comments dataset, led me to the idea of using the comments dataset to generate challenging questions for the evaluation of the RAG system.
+
+To this end, I used the comments dataset to generate medical questions using the following approach:
+
+1. Parse comments to retrieve questions using regular expressions
+2. Instruct LLM to generate a question based on the comment and th evideo description (necessary to create self-contained questions)
+3. Instruct LLM to rate resulting question on a scale from 1 to 10 based on the quality of the question
+4. Use all questions rated at least 8 for evaluation
+
+The following plot shows the evaluation metrics for the RAG system using questions generated from the comments dataset:
+
+![Average Metrics RAG Comments Questions](./evaluation/images/average_metrics_rag_comments_questions.png)
+
+Compared with the previously used set of LLM generated questions, the contextual relevancy and answer relevancy are lower. This indicates, that the newly generated questions are more challenging for the RAG system and could be used for a more realistic evaluation of the RAG system.
+
+## Conclusion
+
+This project aimed to evaluate the potential of YouTube videos from medical influencer channels as a source of medical information for Retrieval Augmented Generation (RAG) systems. Several key findings emerged:
+
+Data Collection: A substantial dataset was created, comprising 94,422 video descriptions, titles, and transcriptions, along with 998,721 comments from 362 different medical professionals. This diverse dataset covered a wide range of medical topics and provided a rich source of information for analysis.
+Content Analysis: Semantic clustering revealed that both the video and comment datasets covered a broad spectrum of medical topics. The video dataset showed strong clusters in areas such as psychotherapy, orthopedics, nutrition, skin health, and infectious diseases. The comment dataset, while overlapping in some areas, also highlighted unique topics such as opinions, conspiracies, and emotional/spiritual content.
+
+Video Dataset: The RAG system using the video dataset demonstrated high performance in answer relevancy and faithfulness across various medical fields. However, context relevancy and hallucination metrics showed more variation, suggesting that the LLM (Claude 3.5 Sonnet) was capable of generating relevant answers even when the retrieved context was less relevant.
+
+Comment Dataset: The RAG system using the comment dataset performed poorly in terms of context relevancy and showed high hallucination rates. This suggests that comments alone are not suitable as a primary data source for medical RAG systems.
+
+Question Generation: An unexpected benefit emerged from the comment dataset. While not ideal for answering questions, it proved valuable for generating challenging, realistic medical questions. This approach led to a more challenging evaluation of the RAG system, as indicated by lower contextual and answer relevancy scores compared to LLM-generated questions.
 
 ### Contact
 
