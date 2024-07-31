@@ -52,6 +52,7 @@ To evaluate wether YouTube could be used as a source of medical information for 
 │   ├── 📄 playlists_scraping.json             # Scraped playlist information
 │   └── 📄 videos_scraping.json                # Scraped video information
 │
+├── 📝 Medfluencer Presentation.pdf       # Slides for the presentation
 ├── 📓 medfluencer_data_analysis.ipynb    # Jupyter notebook for data analysis and clustering
 ├── 📓 medfluencer_index.ipynb            # Jupyter notebook for embedding and indexing
 ├── 📓 medfluencer_rag.ipynb              # Jupyter notebook for RAG implementation and evaluation
