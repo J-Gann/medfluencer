@@ -62,7 +62,7 @@ To evaluate wether YouTube could be used as a source of medical information for 
 
 ## Installation and Usage
 
-This project mainly uses Google Colab for executing juptyer notebooks. Once a notebook is opened on Google Colab, the necessary libraries can be installed with the `%pip install` commands at the beginning of each notebook. It is also recommended to clone this GitHub repository in the Google Colab environment to access the data. The necessary command can be found in ech notebook. A GitHub access token is required.
+This project mainly uses [Google Colab](https://colab.research.google.com/) for executing juptyer notebooks. Once a notebook is opened on Google Colab, the necessary libraries can be installed with the `%pip install` commands at the beginning of each notebook. It is also recommended to clone this GitHub repository in the Google Colab environment to access the data. The necessary command can be found in ech notebook. A [GitHub access token](https://github.com/settings/tokens?type=beta) is required.
 
 The scraping of YouTube data was not performed on Google Colab, but on a local machine. The commands for installation of necessary libraries are included at the beginning of the notebook.
 
@@ -71,9 +71,9 @@ The scraping of YouTube data was not performed on Google Colab, but on a local m
 This project used a combination of approaches to retrieve relevant medical data from YouTube. This are most importantly:
 
 1. Data Scraping using Selenium
-2. Accessing the YouTube Data API
+2. Accessing the [YouTube Data API](https://developers.google.com/youtube/v3/docs)
 
-In the end, a dataset of 94.422 video descriptions, titles and transcriptions as well as 998.721 comments from 362 different medical professionals was created.
+In the end a dataset of **94.422 video descriptions**, titles and transcriptions as well as **998.721 comments** from **362 verified medical channels** was created.
 
 The implementation can be found in the [scraping notebook](./medfluencer_scraping.ipynb)
 
@@ -136,10 +136,10 @@ To further analyze the content of the data, semantic clustering was used. The go
 The semantic clustering for the video dataset was performed as follows:
 
 1. Embed Video Descriptions​
-2. Reduce Embedding Dimension to 2 (**UMAP**)​
-3. Cluster Points by cosine similarity (**DBSCAN**)​
+2. Reduce Embedding Dimension to 2 (**[UMAP](https://umap-learn.readthedocs.io/en/latest/)**)​
+3. Cluster Points by cosine similarity (**[DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html)**)​
 4. Retrieve Transcriptions of Videos for each Cluster​
-5. Remove all words not part of medical keyword dataset (**MESH**)​
+5. Remove all words not part of medical keyword dataset (**[MESH](https://repository.publisso.de/resource/frl%3A6428511)**)​
 6. Sort words by frequency​
 7. Ask LLM to infer topic label from top 15 words for each cluster
 
@@ -272,6 +272,14 @@ Video Dataset: The RAG system using the video dataset demonstrated high performa
 Comment Dataset: The RAG system using the comment dataset performed poorly in terms of context relevancy and showed high hallucination rates. This suggests that comments alone are not suitable as a primary data source for medical RAG systems.
 
 Question Generation: An unexpected benefit emerged from the comment dataset. While not ideal for answering questions, it proved valuable for generating challenging, realistic medical questions. This approach led to a more challenging evaluation of the RAG system, as indicated by lower contextual and answer relevancy scores compared to LLM-generated questions.
+
+## Future Work
+
+1. **Data Preprocessing**: Improve data preprocessing to enhance the quality of the transcriptions and comments, including punctuation, spelling, and grammar correction. Also deduplicate especially the comments dataset to remove redundant information.
+2. **Cluster Analysis**: Further investigate clusters and their properties e.g. "Opinions" cluster. Perform more advanced clustering approaches (e.g clustering in higher dimensions). Use [cluster visualization tools](https://cosmograph.app/) to make exploration interactive.
+3. **More Data**: Collect more data to increase the diversity of the dataset and verify if this improves the performance of the RAG system.
+4. **Language Complexity**: Analyze the complexity of the language (layman v.s. expert) in the dataset
+5. **Question Generation**: Use more questions to evaluate the RAG system for the results to be statistically more reliable.
 
 ## Contact
 
