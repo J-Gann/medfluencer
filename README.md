@@ -55,7 +55,6 @@ To evaluate wether YouTube could be used as a source of medical information for 
 ├── 📓 medfluencer_data_analysis.ipynb    # Jupyter notebook for data analysis and clustering
 ├── 📓 medfluencer_index.ipynb            # Jupyter notebook for embedding and indexing
 ├── 📓 medfluencer_rag.ipynb              # Jupyter notebook for RAG implementation and evaluation
-├── 📓 medfluencer_scrape_channel_names.ipynb  # Jupyter notebook for scraping channel names
 ├── 📓 medfluencer_scraping.ipynb         # Jupyter notebook for scraping data from YouTube
 ├── 📄 medical_fields.json                # List and categorization of medical fields
 └── 📝 README.md                          # Project documentation and overview
